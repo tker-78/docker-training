@@ -1,0 +1,28 @@
+services:
+  front:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+  api:
+    build: ./backend
+    container_name: docker-training-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  db:
+    image: postgres:17
+    container_name: docker-training-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+
