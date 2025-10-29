@@ -1,4 +1,4 @@
-# tips
+# 環境構築tips
 
 vuetifyプロジェクトの作成
 
@@ -24,3 +24,34 @@ npm install vuetify@latest
 npm install vite-plugin-vuetify --save-dev
 npm install sass sass-loader --save-dev
 ```
+
+
+## Keycloak設定
+
+realm `local-dev`を作成する。
+
+client `frontend`を作成する。
+設定内容は下記の通り。
+
+![img.png](img.png)
+
+![img_1.png](img_1.png)
+
+![img_2.png](img_2.png)
+
+
+crient secretの生成
+
+
+
+## FastAPIの設定
+
+
+
+Keycloak Middlewareを使用する。
+
+
+
+
+
+
