@@ -39,16 +39,52 @@ client `frontend`を作成する。
 
 ![img_2.png](img_2.png)
 
+client `fastapi-client`を作成し、
+crient secretの生成(.envに記載)
 
-crient secretの生成
+testuserの作成(password: Password@02)
 
 
+**openid discovery**
+
+`http://localhost:8080/realms/local-dev/.well-known/openid-configuration`
+
+
+下記のリクエストでtokenを取得できる。
+
+```bash
+curl -X POST http://localhost:8080/realms/local-dev/protocol/openid-connect/token \
+ -d "grant_type=password" \
+ -d "client_id=fastapi-client" \ 
+ -d "client_secret=xxx" \
+ -d "username=testuser" \
+ -d "password=Password@01"
+```
+
+下記のリクエストでjwtkを取得できる。
+```bash
+curl -X GET http://localhost:8080/realms/local-dev/protocol/openid-connect/certs
+```
 
 ## FastAPIの設定
 
+認証用ライブラリをインストールする。
+
+```
+python-jose[cryptography]
+httpx
+python-dotenv
+```
 
 
-Keycloak Middlewareを使用する。
+
+```
+$ docker compose down api
+$ docker compose build api
+$ docker compose up -d api
+$ docker compose exec api bash -c "pip install"
+```
+
 
 
 
