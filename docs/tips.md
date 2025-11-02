@@ -55,8 +55,8 @@ testuserの作成(password: Password@02)
 ```bash
 curl -X POST http://localhost:8080/realms/local-dev/protocol/openid-connect/token \
  -d "grant_type=password" \
- -d "client_id=fastapi-client" \ 
- -d "client_secret=xxx" \
+ -d "client_id=fastapi-client" \
+ -d "client_secret=l76OGJMtuJgEdVDp6GkmKYANKzahlLp8" \
  -d "username=testuser" \
  -d "password=Password@01"
 ```
@@ -86,6 +86,19 @@ $ docker compose exec api bash -c "pip install"
 ```
 
 
+## FastAPI Keycloak Middlewareの導入
+
+`get_user`メソッドで、下記の属性を取得可能。
+```
+[
+    "display_name",
+    "first_name",
+    "identity",
+    "is_authenticated",
+    "last_name",
+    "user_id"
+]
+```
 
 
 
