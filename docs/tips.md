@@ -101,6 +101,26 @@ $ docker compose exec api bash -c "pip install"
 ```
 
 
+## Frontendからのkeycloak実装
+
+```
+npm install keycloak-js
+```
+
+**frontend-clientの設定**
+
+![img_3.png](img_3.png)
+
+
+ブラウザからのログインは成功したが、
+Postmanからのログインでは認証を素通りしてしまうので、
+バックエンド側のトークン検証の処理が必要。
+
+
+## FastAPIでのトークン検証
+
+
+
 
 
 

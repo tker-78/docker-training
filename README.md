@@ -8,7 +8,7 @@ docker compose up -d
 ```
 
 システム構成: 
-- frontend: Vuetify
+- frontend: Vue3 + Vuetify
 - backend: FastAPI
 - db:     PostgreSQL
 - 認証: Keycloak
