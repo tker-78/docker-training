@@ -12,19 +12,22 @@ import { registerPlugins } from '@/plugins'
 
 // Components
 import App from './App.vue'
-import keycloak from './keycloak'
-
 // Styles
 import 'unfonts.css'
 
 const app = createApp(App)
 registerPlugins(app)
 
-keycloak.init({ onLoad: 'login-required' }).then((authenticated: boolean) => {
-  if (authenticated) {
-    app.config.globalProperties.$keycloak = keycloak
-    app.mount('#app')
-  } else {
-    window.location.reload()
-  }
-})
+const backendOrigin =
+  import.meta.env.VITE_BACKEND_ORIGIN ?? 'http://localhost:8000'
+
+const cookies = document.cookie.split(';').map((item) => item.trim())
+const hasAccessToken = cookies.some((cookie) => cookie.startsWith('access_token='))
+
+if (!hasAccessToken) {
+  const loginUrl = new URL('/auth/login', backendOrigin)
+  loginUrl.searchParams.set('redirect', window.location.href)
+  window.location.href = loginUrl.toString()
+} else {
+  app.mount('#app')
+}
