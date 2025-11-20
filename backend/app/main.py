@@ -1,10 +1,11 @@
 import os
 from fastapi import FastAPI, Depends, HTTPException, status
-from pydantic import BaseModel
 from fastapi.security import HTTPBearer
-from fastapi_keycloak_middleware import KeycloakConfiguration, setup_keycloak_middleware, get_user
-from typing import Union, Optional
 from dotenv import load_dotenv
+from keycloak import KeycloakOpenID
+from keycloak.exceptions import KeycloakAuthenticationError
+
+
 
 load_dotenv()
 app = FastAPI()
@@ -15,26 +16,33 @@ CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("KEYCLOAK_CLIENT_SECRET")
 ALGORITHM = "HS256"
 
-
-keycloak_config = KeycloakConfiguration(
-    url=KEYCLOAK_URL,
+keycloak_openid = KeycloakOpenID(
+    server_url=KEYCLOAK_URL,
     client_id=CLIENT_ID,
-    realm=REALM,
-    client_secret=CLIENT_SECRET,
-)
+    realm_name=REALM,
+    client_secret_key=CLIENT_SECRET)
 
-setup_keycloak_middleware(
-    app,
-    keycloak_configuration=keycloak_config,
-)
 
-class User(BaseModel):
-    first_name: str
-    last_name: str
-    email: str
-    roles: Optional[list[str]]
+security = HTTPBearer()
 
+def get_current_user(credentials=Depends(security)):
+    token = credentials.credentials
+    try:
+        decoded_token = keycloak_openid.decode_token(
+            token
+        )
+        return decoded_token
+
+    except KeycloakAuthenticationError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token: {e}",
+        )
+
+@app.get("/protected")
+def protected_route(user=Depends(get_current_user)):
+    return {"message": "Access granted", "user": user["preferred_username"]}
 
 @app.get("/")
-async def read_root(user: User = Depends(get_user)):
-    return {"message": user.display_name}
+def root():
+    return {"message": "Hello World"}
