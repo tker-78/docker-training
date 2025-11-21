@@ -6,3 +6,4 @@ python-keycloak
 requests
 uvicorn
 fastapi-keycloak-middleware
+python-jose[cryptography]

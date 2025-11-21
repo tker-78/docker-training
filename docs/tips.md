@@ -56,7 +56,7 @@ testuserの作成(password: Password@02)
 curl -X POST http://localhost:8080/realms/local-dev/protocol/openid-connect/token \
  -d "grant_type=password" \
  -d "client_id=fastapi-client" \
- -d "client_secret=l76OGJMtuJgEdVDp6GkmKYANKzahlLp8" \
+ -d "client_secret=xxxxxxxx" \
  -d "username=testuser" \
  -d "password=Password@01"
 ```

@@ -6,11 +6,13 @@ services:
   api:
     build: ./backend
     container_name: docker-training-api
+    env_file:
+      - ./backend/.env
     ports:
       - "8000:8000"
     volumes:
-      - ./backend/app:/app
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+      - ./backend:/code
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     depends_on:
       - db
       - keycloak
